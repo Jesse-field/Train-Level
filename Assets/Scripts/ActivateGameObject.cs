@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class ActivateGameObject : MonoBehaviour {
 
-	public GameObject triggerToActivate;
-
+	public GameObject[] triggersToActivate;
+	public bool activate;
+	public int delayOnTrigger = 0;
+	public Triggers triggers;
 
 	// Use this for initialization
 	void Start () {
@@ -15,7 +17,26 @@ public class ActivateGameObject : MonoBehaviour {
 	void OnTriggerEnter(Collider Other)
 
 	{
-		
-		triggerToActivate.SetActive (true);
+		if (triggersToActivate.Length > 0) {
+			Invoke ("TriggerAction", delayOnTrigger);
+		}
+
+		if (triggers) {
+			Invoke ("TriggerTrigger", delayOnTrigger);
+		}
+	}
+
+	private void TriggerAction(){
+		foreach (GameObject triggers in triggersToActivate) {
+			if (activate) {
+				triggers.SetActive (true);
+			} else {
+				triggers.SetActive (false);
+			}
+		}
+	}
+
+	private void TriggerTrigger(){
+		triggers.TriggerRemotely ();
 	}
 }

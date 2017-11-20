@@ -9,18 +9,51 @@ public class Triggers : MonoBehaviour {
 	AudioSource audio;
 	public bool alreadyPlayed = false;
 
+	public GameObject door;
+	public int triggerDelay = 0;
+
 	void Start()
 	{
 		audio = GetComponent<AudioSource> ();
 	}
 
-	void OnTriggerEnter()
+	void OnTriggerEnter(Collider other)
 	{
+		
+		if (other.tag == "Player" && door != null) {
+			door.GetComponent<TriggerAnimation> ().isOpen = true;
+			Invoke ("TriggerRemotely",triggerDelay);
+
+		}
+
 		if (!alreadyPlayed) {
 			audio.PlayOneShot(SoundToPlay, Volume);
 			alreadyPlayed = true;
 		}
+
+		if (!door == null) {
+			if (!alreadyPlayed && !door.GetComponent<Animation> ().isPlaying) {
+				audio.PlayOneShot(SoundToPlay, Volume);
+				alreadyPlayed = true;
+
+			}
+		}
+		return;
 	}
+
+	public void TriggerRemotely(){
+		if (!alreadyPlayed) {
+			door.GetComponent<TriggerAnimation> ().isOpen = true;
+			audio.PlayOneShot (SoundToPlay, Volume);
+			alreadyPlayed = true;
+		}
+	}
+
+	void PlayAudio(){
+		
+	}
+
+
 	void OnTriggerExit()
 	{
 		audio.Stop ();
