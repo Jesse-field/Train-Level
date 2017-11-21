@@ -733,7 +733,7 @@ public class FPS_Player : MonoBehaviour
         
                 // Apply Reacrtion force
                 m_v3Motion += t_Vector3;
-                Debug.Log(t_Vector3.ToString());
+                
             }
             else // we walk around on a shallow. no slope
             {
